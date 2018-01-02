@@ -13,7 +13,6 @@
 
 #define CMDBUF_SIZE	80	// enough for one VGA text line
 
-
 struct Command {
 	const char *name;
 	const char *desc;
@@ -137,6 +136,7 @@ monitor(struct Trapframe *tf)
 
 	unsigned int i = 0x00646c72;
 	cprintf("H%x Wo%s%C\n", 57616, &i, '!', 0x0400);
+	
 	while (1) {
 		buf = readline("K> ");
 		if (buf != NULL)
