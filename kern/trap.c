@@ -73,6 +73,64 @@ trap_init(void)
 
 	// LAB 3: Your code here.
 
+	extern void routine_divide();
+	extern void routine_debug();
+	extern void routine_nmi();
+	extern void routine_brkpt();
+	extern void routine_oflow();
+	extern void routine_bound();
+	extern void routine_illop();
+	extern void routine_device();
+	extern void routine_dblflt();
+	extern void routine_tss();
+	extern void routine_segnp();
+	extern void routine_stack();
+	extern void routine_gpflt();
+	extern void routine_pgflt();
+	extern void routine_fperr();
+	extern void routine_align();
+	extern void routine_mchk();
+	extern void routine_simderr();
+	extern void routine_syscall();
+	extern void routine_default();
+	extern void routine_irq_timer();
+	extern void routine_irq_kbd();
+	extern void routine_irq_serial();
+	extern void routine_irq_spurious();
+	extern void routine_irq_ide();
+	extern void routine_irq_error();
+
+	int i;
+	for (i = 0; i < 256; i++) {
+		SETGATE(idt[i], 0, GD_KT, routine_default, 0);
+	}
+	SETGATE(idt[T_DIVIDE], 1, GD_KT, routine_divide, 0);
+	SETGATE(idt[T_DEBUG], 1, GD_KT, routine_debug, 0);
+	SETGATE(idt[T_NMI], 0, GD_KT, routine_nmi, 0);
+	SETGATE(idt[T_BRKPT], 1, GD_KT, routine_brkpt, 3);
+	SETGATE(idt[T_OFLOW], 1, GD_KT, routine_oflow, 0);
+	SETGATE(idt[T_BOUND], 1, GD_KT, routine_bound, 0);
+	SETGATE(idt[T_ILLOP], 1, GD_KT, routine_illop, 0);
+	SETGATE(idt[T_DEVICE], 1, GD_KT, routine_device, 0);
+	SETGATE(idt[T_DBLFLT], 1, GD_KT, routine_dblflt, 0);
+	SETGATE(idt[T_TSS], 1, GD_KT, routine_tss, 0);
+	SETGATE(idt[T_SEGNP], 1, GD_KT, routine_segnp, 0);
+	SETGATE(idt[T_STACK], 1, GD_KT, routine_stack, 0);
+	SETGATE(idt[T_GPFLT], 1, GD_KT, routine_gpflt, 0);
+	SETGATE(idt[T_PGFLT], 1, GD_KT, routine_pgflt, 0);
+	SETGATE(idt[T_FPERR], 1, GD_KT, routine_fperr, 0);
+	SETGATE(idt[T_ALIGN], 1, GD_KT, routine_align, 0);
+	SETGATE(idt[T_MCHK], 1, GD_KT, routine_mchk, 0);
+	SETGATE(idt[T_SIMDERR], 1, GD_KT, routine_simderr, 0);
+	SETGATE(idt[T_SYSCALL], 0, GD_KT, routine_syscall, 3);
+	SETGATE(idt[IRQ_OFFSET + IRQ_TIMER], 0, GD_KT, routine_irq_timer, 0);
+	SETGATE(idt[IRQ_OFFSET + IRQ_KBD], 0, GD_KT, routine_irq_kbd, 0);
+	SETGATE(idt[IRQ_OFFSET + IRQ_SERIAL], 0, GD_KT, routine_irq_serial, 0);
+	SETGATE(idt[IRQ_OFFSET + IRQ_SPURIOUS], 0, GD_KT, routine_irq_spurious, 0);
+	SETGATE(idt[IRQ_OFFSET + IRQ_IDE], 0, GD_KT, routine_irq_ide, 0);
+	SETGATE(idt[IRQ_OFFSET + IRQ_ERROR], 0, GD_KT, routine_irq_error, 0);
+
+
 	// Per-CPU setup 
 	trap_init_percpu();
 }
@@ -176,6 +234,7 @@ trap_dispatch(struct Trapframe *tf)
 {
 	// Handle processor exceptions.
 	// LAB 3: Your code here.
+	
 
 	// Handle spurious interrupts
 	// The hardware sometimes raises these because of noise on the
